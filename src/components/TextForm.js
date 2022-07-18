@@ -19,9 +19,7 @@ export default function TextForm(props) {
   };
 
   const handleOnClickCopyCode = (event) => {
-    let text = document.getElementById("myBox");
-    text.select();
-    navigator.clipboard.writeText(text.value);
+    navigator.clipboard.writeText(text);
     props.showAlert("Copies to Clipboard", "success");
   };
 
@@ -44,7 +42,7 @@ export default function TextForm(props) {
         <div className="mb-3">
           <textarea
             style={{
-              backgroundColor: props.mode === "dark" ? "gray" : "white",
+              backgroundColor: props.mode === "dark" ? "#b3b3b3" : "white",
               color: props.mode === "light" ? "black" : "white",
             }}
             className="form-control"
@@ -55,31 +53,36 @@ export default function TextForm(props) {
           ></textarea>
         </div>
         <button
-          className="btn btn-primary mx-1"
+          disabled={text.length === 0}
+          className="btn btn-primary mx-1 my-1"
           onClick={handleOnClickToUpperCase}
         >
           Convert to Uppercase
         </button>
         <button
-          className="btn btn-primary mx-1"
+          disabled={text.length === 0}
+          className="btn btn-primary mx-1 my-1"
           onClick={handleOnClickToLowerCase}
         >
           Convert to Lowercase
         </button>
         <button
-          className="btn btn-danger mx-1"
+          disabled={text.length === 0}
+          className="btn btn-danger mx-1 my-1"
           onClick={handleOnClickToClearText}
         >
           Clear Text
         </button>
         <button
-          className="btn btn-primary mx-1"
+          disabled={text.length === 0}
+          className="btn btn-primary mx-1 my-1"
           onClick={handleOnClickCopyCode}
         >
           Copy Text
         </button>
         <button
-          className="btn btn-primary mx-1"
+          disabled={text.length === 0}
+          className="btn btn-primary mx-1 my-1"
           onClick={handleOnClickRemoveExtraSpace}
         >
           Remove Extra Space
@@ -91,15 +94,16 @@ export default function TextForm(props) {
       >
         <h1>Your text summary</h1>
         <p>
-          {text.split(" ").length - 1} words and {text.length} characters
+          {
+            text.split(/\s+/).filter((element) => {
+              return element.length !== 0;
+            }).length
+          }{" "}
+          words and {text.length} characters
         </p>
         <p>{0.008 * text.split(" ").length} Minutes read</p>
         <h2>Preview</h2>
-        <p>
-          {text.length > 0
-            ? text
-            : "Enter something in the textbox above to provide it here!/"}
-        </p>
+        <p>{text.length > 0 ? text : "Nothing to preview!"}</p>
       </div>
     </>
   );
